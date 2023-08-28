@@ -1,0 +1,11 @@
+<mat-toolbar>
+  <span>Gerenciamento MyMarket</span>
+</mat-toolbar>
+<mat-drawer-container class="container">
+  <mat-drawer mode="side" opened>
+    <app-side-menu></app-side-menu>
+  </mat-drawer>
+  <mat-drawer-content>
+    <router-outlet></router-outlet>
+  </mat-drawer-content>
+</mat-drawer-container>

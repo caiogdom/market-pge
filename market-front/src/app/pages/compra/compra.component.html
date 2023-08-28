@@ -1,0 +1,75 @@
+<div class="list-container" *ngIf="!isNovaCompra">
+    <h1>Compras</h1>
+    <span *ngIf="compras.length === 0">Nenhum compra realizada.</span>
+    <table mat-table [dataSource]="compras" *ngIf="compras.length > 0">
+        <ng-container matColumnDef="dataCompra">
+            <th mat-header-cell *matHeaderCellDef>Data da Compra</th>
+            <td mat-cell *matCellDef="let compra">{{ compra.dataCompra | mask: '00/00/0000' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="codigoProduto">
+            <th mat-header-cell *matHeaderCellDef>Código do Produto</th>
+            <td mat-cell *matCellDef="let compra">{{ compra.codigoProduto }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="cpf">
+            <th mat-header-cell *matHeaderCellDef>CPF do Cliente</th>
+            <td mat-cell *matCellDef="let compra">{{ compra.cpfCliente | mask: '000.000.000-00' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="notaFiscal">
+            <th mat-header-cell *matHeaderCellDef>Nota Fiscal</th>
+            <td mat-cell *matCellDef="let compra">
+                <button mat-icon-button aria-label="Ver nota fiscal">
+                    <mat-icon>visibility</mat-icon>
+                </button>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="acoes">
+            <th mat-header-cell *matHeaderCellDef>Ações</th>
+            <td mat-cell *matCellDef="let compra"></td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="colunas"></tr>
+        <tr mat-row *matRowDef="let row; columns: colunas;"></tr>
+    </table>
+    <button mat-raised-button color="primary" (click)="iniciaCadastro()">Nova Compra</button>
+</div>
+<div class="form-container" *ngIf="isNovaCompra">
+    <form [formGroup]="formCompra">
+        <mat-form-field>
+            <mat-label>CPF do Cliente</mat-label>
+            <input matInput formControlName="cpfCliente" mask="000.000.000-00">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Código do Produto</mat-label>
+            <input matInput formControlName="codigoProduto">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Data da Compra</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="dataCompra">
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Nota Fiscal</mat-label>
+			<button mat-icon-button matPrefix (click)="f_input.click()">
+                <mat-icon>attach_file</mat-icon>
+            </button>
+            <input type="text" readonly matInput formControlName="notaFiscal" />
+            <input
+                type="file"
+                hidden
+                #f_input
+                accept=".pdf"
+                (change)="handleFileInputChange(f_input)"
+            />
+			<mat-error>this field is required</mat-error>
+        </mat-form-field>
+        <div class="button-group">
+            <button mat-raised-button color="primary" (click)="salvarCompra()">Concluir</button>
+            <button mat-raised-button (click)="isNovaCompra = false">Voltar</button>
+        </div>
+    </form>
+</div>

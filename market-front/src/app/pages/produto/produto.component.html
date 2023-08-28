@@ -1,0 +1,50 @@
+<div class="list-container" *ngIf="!isNovoProduto">
+    <h1>Produtos</h1>
+    <span *ngIf="produtos.length === 0">Nenhum produto cadastrado.</span>
+    <table mat-table [dataSource]="produtos" *ngIf="produtos.length > 0">
+        <ng-container matColumnDef="nome">
+            <th mat-header-cell *matHeaderCellDef>Nome</th>
+            <td mat-cell *matCellDef="let produto">{{ produto.nome }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="acoes">
+            <th mat-header-cell *matHeaderCellDef>Ações</th>
+            <td mat-cell *matCellDef="let produto">
+                <button mat-icon-button aria-label="Editar produto" (click)="editaCadastro(produto)">
+                    <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button aria-label="Excluir produto" (click)="deletaCadastro(produto)">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="colunas"></tr>
+        <tr mat-row *matRowDef="let row; columns: colunas;"></tr>
+    </table>
+    <button mat-raised-button color="primary" (click)="iniciaCadastro()">Novo Produto</button>
+</div>
+<div class="form-container" *ngIf="isNovoProduto">
+    <form [formGroup]="formProduto">
+        <mat-form-field>
+            <mat-label>Código</mat-label>
+            <input matInput formControlName="codigo">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Nome</mat-label>
+            <input matInput formControlName="nome">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Descrição</mat-label>
+            <input matInput formControlName="descricao">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Preço</mat-label>
+            <input matInput formControlName="preco" type="number">
+        </mat-form-field>
+        <div class="button-group">
+            <button mat-raised-button color="primary" (click)="salvarProduto()">Concluir</button>
+            <button mat-raised-button (click)="isNovoProduto = false; isEditaProduto = false;">Voltar</button>
+        </div>
+    </form>
+</div>
